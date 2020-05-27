@@ -1,16 +1,17 @@
-import io.javalin.Javalin;
+import io.javalin.Javalin
+import io.javalin.http.Context
 
-public class Main {
-
-  public static void main(String[] args) {
-    Javalin.create().get("/", ctx -> ctx.result("Helo Heroku")).start(getHerokuAssignedPort());
-  }
-
-  private static int getHerokuAssignedPort() {
-    ProcessBuilder processBuilder = new ProcessBuilder();
-    if (processBuilder.environment().get("PORT") != null) {
-      return Integer.parseInt(processBuilder.environment().get("PORT"));
+object Main {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        Javalin.create()["/", { ctx: Context -> ctx.result("hello kotlin") }].start(herokuAssignedPort)
     }
-    return 7000;
-  }
+
+    private val herokuAssignedPort: Int
+        private get() {
+            val processBuilder = ProcessBuilder()
+            return if (processBuilder.environment()["PORT"] != null) {
+                processBuilder.environment()["PORT"]!!.toInt()
+            } else 7000
+        }
 }
