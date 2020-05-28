@@ -4,11 +4,12 @@ import io.javalin.http.Context
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-        Javalin.create()["/", { ctx: Context -> ctx.result("hello kotlin") }].start(herokuAssignedPort)
+        val app = Javalin.create().start(herokuAssignedPort)
+        app.get("/") { ctx -> ctx.result("Hello World") }
     }
 
     private val herokuAssignedPort: Int
-        private get() {
+        get() {
             val processBuilder = ProcessBuilder()
             return if (processBuilder.environment()["PORT"] != null) {
                 processBuilder.environment()["PORT"]!!.toInt()
